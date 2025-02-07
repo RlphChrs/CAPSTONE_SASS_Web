@@ -5,7 +5,7 @@ import NavigationImage from '../assets/navigation.png';
 
 const Registration = () => {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-blue-900 to-gray-900 text-white flex flex-col">
+    <div className="min-h-screen w-full text-white flex flex-col">
       <Header />
       <div className="flex-grow flex items-center justify-center p-6">
         <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-7xl">
