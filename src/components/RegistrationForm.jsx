@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-
 const RegistrationForm = () => {
   return (
-    <div className="bg-gray-800 text-white rounded-2xl shadow-xl w-full max-w-3xl p-8">
+    <div className="text-white">
       <h2 className="text-3xl font-bold mb-6 text-center">Create Account</h2>
       <form className="space-y-4">
         <div className="flex space-x-4">
@@ -22,6 +21,15 @@ const RegistrationForm = () => {
         </div>
         <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-md font-semibold">REGISTER</button>
       </form>
+      <div className="flex items-center justify-center mt-4">
+        <hr className="w-1/4 border-gray-600" />
+        <span className="px-2 text-gray-400">or register with</span>
+        <hr className="w-1/4 border-gray-600" />
+      </div>
+      <button type="button" className="w-full flex items-center justify-center bg-white text-gray-800 p-3 rounded-md mt-4 shadow-md">
+        <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google Icon" className="w-5 h-5 mr-2" />
+        Sign in with Google
+      </button>
       <p className="text-sm text-gray-400 text-center mt-4">
         Already have an account? <Link to="/login" className="text-blue-400">Login</Link>
       </p>
