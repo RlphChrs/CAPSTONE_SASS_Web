@@ -6,6 +6,7 @@ const RegistrationForm = () => {
     <div className="text-white">
       <h2 className="text-3xl font-bold mb-6 text-center">Create Account</h2>
       <form className="space-y-4">
+      <input type="text" placeholder="Name of School or University" className="w-full p-3 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
         <div className="flex space-x-4">
           <input type="text" placeholder="First Name" className="w-1/2 p-3 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
           <input type="text" placeholder="Last Name" className="w-1/2 p-3 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
