@@ -5,6 +5,7 @@ const RegistrationForm = () => {
   return (
     <div className="text-white">
       <h2 className="text-3xl font-bold mb-6 text-center">Create Account</h2>
+      <h3 className="text-1xl  mb-6 text-center">Enter your Name, Email and Password for sign up.</h3>
       <form className="space-y-4">
       <input type="text" placeholder="Name of School or University" className="w-full p-3 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
         <div className="flex space-x-4">

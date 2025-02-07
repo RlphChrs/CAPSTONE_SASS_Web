@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ApplicationLogo from '../assets/logo.png';
+
 
 const Header = () => {
   return (
-    <header className="flex justify-between items-center p-4 text-white shadow-md w-full">
+    <header className="flex justify-between items-center p-7 text-white shadow-md w-full">
       <div className="flex items-center space-x-4">
-        <img src="/image/logo.png" alt="SASS Logo" className="w-10 h-10" />
-        <h1 className="text-2xl font-bold">SASS</h1>
+      <img src={ApplicationLogo} alt="SASS Logo" className="w-16 h-10 rounded-lg" />
       </div>
       <nav className="flex items-center space-x-6">
         <Link to="/" className="hover:text-blue-400">Contact</Link>
