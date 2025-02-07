@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <header className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-900 to-gray-900 text-white shadow-md w-full">
+    <header className="flex justify-between items-center p-4 text-white shadow-md w-full">
       <div className="flex items-center space-x-4">
         <img src="/logo.png" alt="SASS Logo" className="w-10 h-10" />
         <h1 className="text-2xl font-bold">SASS</h1>

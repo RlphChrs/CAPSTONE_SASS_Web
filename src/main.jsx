@@ -18,26 +18,29 @@ import Report from './Pages/Report';
 import UploadKnowledgePage from './Pages/Uploadknowledge-Page';
 import ViewReport from './Pages/ViewReport';
 import ViewSpecificDayPage from './Pages/ViewSpecificDayPage';
+import Wrapper from './components/Wrapper';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Registration />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/billing" element={<Billing />} />
-        <Route path="/billing-page" element={<BillingPage />} />
-        <Route path="/add-appointment" element={<AddAppointment />} />
-        <Route path="/calendar-days" element={<CalendarDaysView />} />
-        <Route path="/calendar-month" element={<CalendarMonthView />} />
-        <Route path="/report" element={<Report />} />
-        <Route path="/upload-knowledge" element={<UploadKnowledgePage />} />
-        <Route path="/view-report" element={<ViewReport />} />
-        <Route path="/view-specific-day" element={<ViewSpecificDayPage />} />
-      </Routes>
+      <Wrapper>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Registration />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/billing" element={<Billing />} />
+          <Route path="/billing-page" element={<BillingPage />} />
+          <Route path="/add-appointment" element={<AddAppointment />} />
+          <Route path="/calendar-days" element={<CalendarDaysView />} />
+          <Route path="/calendar-month" element={<CalendarMonthView />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/upload-knowledge" element={<UploadKnowledgePage />} />
+          <Route path="/view-report" element={<ViewReport />} />
+          <Route path="/view-specific-day" element={<ViewSpecificDayPage />} />
+        </Routes>
+      </Wrapper>
     </BrowserRouter>
   </StrictMode>
 );
