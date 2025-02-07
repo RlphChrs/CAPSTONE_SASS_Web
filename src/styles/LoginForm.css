@@ -1,0 +1,169 @@
+/* LoginForm.css */
+.login-container {
+    
+    display: flex;
+    flex-direction: column;
+    background-color: #111421;
+    color: white;
+}
+  
+.register-btn{
+    border: 1px solid white;
+    background: none;
+  
+} 
+.login-btn{
+    border: 1px solid white;  
+  color: white;
+  background-color: #3B3EE7;
+  margin: 0 15px;
+
+} 
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* Align items to the left initially */
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem;
+    width: 100%; /* Make it take full width */
+    gap: 2rem; /* Adds space between sections */
+}
+
+.left-section {
+    text-align: center;
+    flex: 1;
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .left-section {
+        display: block;
+    }
+}
+
+.right-section {
+    flex: 1.5; /* Increase this to make the form spread more */
+    max-width: 500px; /* Adjust width as needed */
+    padding: 2rem;
+    background-color: #1B263B;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+  
+.login-form input {
+    background-color: #ccc;
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+}
+  
+.forgot-password {
+    
+    text-align: right;
+    margin-top: 0.5rem;
+}
+.forgot-password a {
+    color: #ffff;
+    text-align: right;
+    margin-top: 0.5rem;
+}  
+.signup-text {
+    text-align: center;
+    margin-top: 1rem;
+}
+.signup-text a{
+    color: #ffff;
+    text-align: center;
+    margin-top: 1rem;
+}
+  
+.google-btn {
+
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5%;
+}
+  
+.google-btn:hover {
+    background-color: #f1f1f1;
+}
+  
+.google-btn img {
+    width: 20px;
+    height: 20px;
+}
+.signin-btn{
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 2%;
+
+}
+  
+.left-section {
+    margin-top: -20px; /* Moves the entire section up */
+}
+
+.left-section h2 {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.left-section h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #ffff;
+}
+
+.chatbot-img {
+    width: 500px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px; /* Reduce bottom margin to move it higher */
+}
+
+  
+  /* Style the Google Sign-in Button */
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between icon and text */
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+  
+.google-btn img {
+    width: 20px; /* Adjust size */
+    height: auto;
+}
+   
