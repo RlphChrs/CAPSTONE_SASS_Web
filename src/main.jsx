@@ -15,7 +15,7 @@ import AddAppointment from './Pages/Add-appointment';
 import CalendarDaysView from './Pages/CalendarDaysView';
 import CalendarMonthView from './Pages/CalendarMonthView';
 import Report from './Pages/Report';
-import UploadKnowledgePage from './Pages/Uploadknowledge-Page';
+import UploadKnowledgePage from './Pages/UploadKnowledge-Page';
 import ViewReport from './Pages/ViewReport';
 import ViewSpecificDayPage from './Pages/ViewSpecificDayPage';
 import Wrapper from './components/Wrapper';
