@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import DashboardHeader from '../components/DashboardHeader';
 import SideNav from '../components/SideNav';
@@ -19,7 +19,20 @@ const data = [
   { day: 'Sun', users: 350 },
 ];
 
+const initialTransactions = [
+  { id: 1, type: 'income', date: '27 March 2020, at 12:30 PM', amount: 2500 },
+  { id: 2, type: 'expense', date: '26 March 2020, at 13:45 PM', amount: -800 },
+  { id: 3, type: 'income', date: '26 March 2020, at 12:30 PM', amount: 1700 },
+  { id: 4, type: 'pending', date: '26 March 2020, at 05:00 AM', status: 'Pending' },
+  { id: 5, type: 'expense', date: '25 March 2020, at 16:30 PM', amount: -987 },
+];
+
 const Dashboard = () => {
+  const [transactions, setTransactions] = useState(initialTransactions);
+
+  const recentTransactions = transactions.slice(0, 2);
+  const pastTransactions = transactions.slice(2);
+
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
@@ -62,25 +75,80 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Analytics Section */}
-        <div className="bg-gray-100 text-gray-900 rounded-lg shadow-md w-2/3 ml-2">
-          <h2 className=" text-left text-xl font-semibold m-4">Active Users</h2>
-          <p className=" text-left m-4 text-sm text-gray-600">4.5k Students</p>
-          <ResponsiveContainer width="100%" height={500}>
-            <BarChart data={data} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="users" fill="url(#colorGradient)" barSize={30} />
-              <defs>
-                <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#00FF7F" stopOpacity={1} />
-                  <stop offset="100%" stopColor="#0000FF" stopOpacity={1} />
-                </linearGradient>
-              </defs>
-            </BarChart>
-          </ResponsiveContainer>
+        {/* Analytics and Transaction Section */}
+        <div className="flex space-x-4 ml-2">
+          {/* Analytics Section */}
+          <div className="bg-gray-100 text-gray-900 rounded-lg h-auto shadow-md w-2/3 mb-2">
+            <h2 className=" text-left text-xl font-semibold m-4">Active Users</h2>
+            <p className=" text-left m-4 text-sm text-gray-600">4.5k Students</p>
+            <ResponsiveContainer width="100%" height={650}>
+              <BarChart data={data} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="users" fill="url(#colorGradient)" barSize={30} />
+                <defs>
+                  <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#00FF7F" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#0000FF" stopOpacity={1} />
+                  </linearGradient>
+                </defs>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Transaction History Section */}
+          <div className="bg-gray-100 text-gray-900 rounded-lg p-4 shadow-md w-1/3">
+            <h2 className="text-xl font-semibold mb-4">Transaction History</h2>
+
+            <div className="mb-4">
+              <h3 className="font-semibold text-lg">Recent Transactions</h3>
+              {recentTransactions.map((transaction) => (
+                <div key={transaction.id} className="flex justify-between items-center mb-2">
+                  <div>
+                    <p className="font-bold">SASS</p>
+                    <p className="text-sm text-gray-600">{transaction.date}</p>
+                  </div>
+                  <div>
+                    {transaction.type === 'income' && (
+                      <span className="text-green-500">+${transaction.amount}</span>
+                    )}
+                    {transaction.type === 'expense' && (
+                      <span className="text-red-500">-${Math.abs(transaction.amount)}</span>
+                    )}
+                    {transaction.type === 'pending' && (
+                      <span className="text-gray-700 font-bold">{transaction.status}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-lg">Past Transactions</h3>
+              {pastTransactions.map((transaction) => (
+                <div key={transaction.id} className="flex justify-between items-center mb-2">
+                  <div>
+                    <p className="font-bold">SASS</p>
+                    <p className="text-sm text-gray-600">{transaction.date}</p>
+                  </div>
+                  <div>
+                    {transaction.type === 'income' && (
+                      <span className="text-green-500">+${transaction.amount}</span>
+                    )}
+                    {transaction.type === 'expense' && (
+                      <span className="text-red-500">-${Math.abs(transaction.amount)}</span>
+                    )}
+                    {transaction.type === 'pending' && (
+                      <span className="text-gray-700 font-bold">{transaction.status}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+          </div>
         </div>
 
       </div>

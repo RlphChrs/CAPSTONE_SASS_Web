@@ -27,7 +27,7 @@ const SideNav = () => {
   };
 
   return (
-    <div className="w-74 h-screen bg-gray-900 text-white flex flex-col shadow-md mt-16 p-6">
+    <div className="w-74 h-275 bg-gray-900 text-white flex flex-col shadow-md mt-16 p-6">
       <nav className="flex-grow">
         <ul>
           {menuItems.map((item, index) => (

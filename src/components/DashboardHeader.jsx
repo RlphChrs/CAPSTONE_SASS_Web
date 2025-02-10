@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import { FaBell, FaCog, FaUser } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ApplicationLogo from '../assets/logo.png';
 
 const DashboardHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const getPageName = (path) => {
     const formattedPath = path.split('/')[1];
     return formattedPath
       ? formattedPath.charAt(0).toUpperCase() + formattedPath.slice(1).replace('-', ' ')
       : 'Dashboard';
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
   };
 
   return (
@@ -50,9 +55,12 @@ const DashboardHeader = () => {
           {/* Dropdown Menu */}
           {isOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg py-2">
-              <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-200">
+              <button
+                onClick={handleProfileClick}
+                className="flex items-center px-4 py-2 hover:bg-gray-200 w-full text-left"
+              >
                 <FaUser className="mr-2" /> Profile
-              </a>
+              </button>
               <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-200">
                 <FaCog className="mr-2" /> Settings
               </a>
