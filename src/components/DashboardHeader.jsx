@@ -1,22 +1,30 @@
 import React, { useState } from "react";
 import { FaBell, FaCog, FaUser } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
+import ApplicationLogo from '../assets/logo.png';
 
-const TopNav = () => {
+const DashboardHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const getPageName = (path) => {
+    const formattedPath = path.split('/')[1];
+    return formattedPath
+      ? formattedPath.charAt(0).toUpperCase() + formattedPath.slice(1).replace('-', ' ')
+      : 'Dashboard';
+  };
 
   return (
     <nav className="bg-[#0B0D21] text-white flex items-center justify-between px-6 py-3 fixed top-0 left-0 right-0 shadow-md z-50">
-      {/* Left Section: Logo + Breadcrumb */}
       <div className="flex items-center space-x-4">
-        <img src="/image/logo.png" alt="SAAS Logo" className="w-10 h-10" />
-        <span className="text-lg font-semibold">SAAS</span>
-        <div className="text-gray-400 text-sm">
-          Pages / <span className="text-white">Upload Knowledge</span>
+        <img src={ApplicationLogo} alt="SASS Logo" className="w-16 h-10 rounded-lg" />
+        <div className="text-gray-400 text-sm ml-50.5">
+          Pages / <span className="text-white">{getPageName(location.pathname)}</span>
         </div>
       </div>
 
       {/* Right Section: Buttons & Search */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-8">
         {/* Subscribe Button */}
         <button className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 rounded-md font-medium">
           Subscribe
@@ -33,7 +41,7 @@ const TopNav = () => {
         <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center space-x-2 focus:outline-none"
+            className="flex items-center space-x-5 focus:outline-none"
           >
             <span className="text-sm">J. Smith</span>
             <img src="../image/picture.png" alt="Profile" className="h-8 w-8 rounded-full" />
@@ -67,4 +75,4 @@ const TopNav = () => {
   );
 };
 
-export default TopNav;
+export default DashboardHeader;

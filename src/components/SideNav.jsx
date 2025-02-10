@@ -20,22 +20,21 @@ const menuItems = [
 ];
 
 const SideNav = () => {
-  const [active, setActive] = useState("/upload"); // Default active page
+  const [active, setActive] = useState("/upload"); 
 
   const handleItemClick = (path) => {
     setActive(path);
   };
 
   return (
-    <div className="w-64 h-screen bg-gray-900 text-white flex flex-col shadow-md mt-16">
-      {/* Navigation Links */}
+    <div className="w-74 h-screen bg-gray-900 text-white flex flex-col shadow-md mt-16 p-6">
       <nav className="flex-grow">
         <ul>
           {menuItems.map((item, index) => (
             <li key={index} className="mb-1">
               <NavLink
                 to={item.path}
-                className={`flex items-center p-3 rounded-md transition-all ${
+                className={`flex items-center p-3 h-18 rounded-md transition-all ${
                   active === item.path
                     ? "bg-gray-700 text-white"
                     : "hover:bg-gray-800 hover:text-gray-300"
@@ -43,7 +42,7 @@ const SideNav = () => {
                 onClick={() => handleItemClick(item.path)}
               >
                 <img
-                  src={item.assets} // Fixed the image reference
+                  src={item.assets}
                   alt={item.name}
                   className="w-6 h-6 mr-3 transition-transform transform hover:scale-110"
                 />
@@ -52,20 +51,24 @@ const SideNav = () => {
             </li>
           ))}
         </ul>
-      </nav>
 
-      {/* Help Section */}
-      <div className="p-5">
-        <div className="bg-gray-800 p-4 rounded-md text-sm text-gray-400 text-center">
-          <p>Need help?</p>
-          <p className="mt-1">
-            <a href="/docs" className="text-blue-400 hover:underline">
-              Check our docs
-            </a>
-          </p>
+        {/* Help Section */}
+      <div className=" mt-20 backdrop-filter backdrop-blur-lg bg-gray-800 bg-opacity-30 rounded-2xl">
+        <div className="p-4 rounded-md text-sm text-gray-400 text-center mt-2 pt-10 pb-10">
+          <p>NEED HELP?</p>
+              <div className="mt-2 ">
+                <button className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 rounded-md font-medium transition-transform transform hover:scale-110">
+                    <p className="mt-1">
+                      <a href="/docs" className="text-white-400">
+                       DOCUMENTATION
+                      </a>
+                    </p>
+                </button>
+              </div>
         </div>
       </div>
-    </div>
+    </nav>
+  </div>
   );
 };
 

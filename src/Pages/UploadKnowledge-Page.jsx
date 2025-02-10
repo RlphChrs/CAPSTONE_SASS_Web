@@ -4,7 +4,7 @@ import UploadHeader from "../components/UploadHeader";
 import FileItem from "../components/FileItem";
 import ProgressSection from "../components/ProgressSection";
 import SideNav from "../components/SideNav";
-import TopNav from "../components/TopNav";
+import DashboardHeader from "../components/DashboardHeader";
 
 const UploadKnowledgePage = () => {
   return (
@@ -15,7 +15,7 @@ const UploadKnowledgePage = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Top Navigation */}
-        <TopNav />
+        <DashboardHeader />
 
         {/* Main Content Area */}
         <div className="p-6 flex flex-col w-full">
