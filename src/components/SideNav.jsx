@@ -15,6 +15,8 @@ const menuItems = [
   { name: "Billing", assets: billingIcon, path: "/billing" },
   { name: "Upload Knowledge", assets: knowledgeIcon, path: "/upload-knowledge" },
   { name: "Appointment", assets: appointmentIcon, path: "/add-appointment" },
+  { name: "Report", assets: signinIcon, path: "/report" },
+  { name: "Calendar", assets: billingIcon, path: "calendar-month" },
   { name: "Log In", assets: signinIcon, path: "/login" },
   { name: "Sign Up", assets: signupIcon, path: "/register" },
 ];
