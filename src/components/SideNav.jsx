@@ -5,20 +5,17 @@ import tableIcon from "../assets/table-icon.png";
 import billingIcon from "../assets/billing-icon.png";
 import knowledgeIcon from "../assets/knowledge-icon.png";
 import appointmentIcon from "../assets/appointment-icon.png";
-import signinIcon from "../assets/signin-icon.png";
-import signupIcon from "../assets/signup-icon.png";
+import reportIcon from "../assets/Report-icon.png";
 
-// Define menu items with icons
+
 const menuItems = [
   { name: "Dashboard", assets: homeIcon, path: "/dashboard" },
   { name: "Tables", assets: tableIcon, path: "/tables" },
   { name: "Billing", assets: billingIcon, path: "/billing" },
   { name: "Upload Knowledge", assets: knowledgeIcon, path: "/upload-knowledge" },
   { name: "Appointment", assets: appointmentIcon, path: "/add-appointment" },
-  { name: "Report", assets: signinIcon, path: "/report" },
-  { name: "Calendar", assets: billingIcon, path: "calendar-month" },
-  { name: "Log In", assets: signinIcon, path: "/login" },
-  { name: "Sign Up", assets: signupIcon, path: "/register" },
+  { name: "Report", assets: reportIcon, path: "/report" },
+  { name: "Calendar", assets: billingIcon, path: "calendar-month" }
 ];
 
 const SideNav = () => {
