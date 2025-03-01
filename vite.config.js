@@ -8,4 +8,9 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+
+  //server: {
+  //  proxy: {
+   // }
+  //}
 })
