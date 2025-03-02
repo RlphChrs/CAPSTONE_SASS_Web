@@ -9,12 +9,12 @@ const FileItem = ({ fileName, fileSize, progress, status }) => {
           <FaFilePdf className="mr-1" /> PDF
         </span>
         <div>
-          <p className="text-sm font-semibold">{fileName}</p>
+          <p className="text-sm font-semibold text-black">{fileName}</p>
           <p className="text-xs text-gray-500">{fileSize} KB</p>
         </div>
       </div>
 
-      <div className="w-32">
+      <div className="w-45">
         {status === "uploading" ? (
           <div className="w-full bg-gray-200 h-2 rounded">
             <div
@@ -24,15 +24,17 @@ const FileItem = ({ fileName, fileSize, progress, status }) => {
           </div>
         ) : (
           <span className="text-green-600 font-semibold flex items-center">
-            <FaCheckCircle className="mr-1" /> {status}
+            <FaCheckCircle className="mr-1" /> Completed
           </span>
         )}
       </div>
 
-      {status === "completed" ? (
+      <span className="text-gray-500 text-xs">
+        {status === "completed" ? "DONE" : "Uploading..."}
+      </span>
+
+      {status === "completed" && (
         <FaTrash className="text-gray-500 cursor-pointer" />
-      ) : (
-        <span className="text-gray-500 text-xs">Uploading...</span>
       )}
     </div>
   );

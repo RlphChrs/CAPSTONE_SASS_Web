@@ -29,12 +29,12 @@ export const loginSAO = async (email, password) => {
 export const uploadFile = async (file, token) => {
   try {
     const formData = new FormData();
-    formData.append('File', file); // 
+    formData.append('File', file); // ✅ Ensure 'File' matches backend Multer field
 
     const response = await axios.post(`${Upload_URL}/uploads/upload`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data', 
-        Authorization: `Bearer ${token}` // ✅ Send JWT Token
+        'Content-Type': 'multipart/form-data', // ✅ Required for file upload
+        Authorization: `Bearer ${token}`, // ✅ Send JWT Token
       },
       onUploadProgress: (progressEvent) => {
         console.log("Upload Progress:", Math.round((progressEvent.loaded * 100) / progressEvent.total));
@@ -47,6 +47,7 @@ export const uploadFile = async (file, token) => {
     throw error;
   }
 };
+
 
 //Get Uploaded Files
 export const getUploadedFiles = async (token) => {
@@ -62,3 +63,23 @@ export const getUploadedFiles = async (token) => {
     throw error;
   }
 };
+
+//Delete File
+export const deleteFile = async (fileId, fileUrl, token) => {
+  try {
+    const response = await axios.delete(`${Upload_URL}/delete-file`, { 
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: { fileId, fileUrl },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("File deletion failed:", error.response?.data?.message);
+    throw error;
+  }
+};
+
+
