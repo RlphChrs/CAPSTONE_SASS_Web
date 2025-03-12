@@ -1,12 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ApplicationLogo from '../assets/logo.png';
 
 
 const Header = () => {
+  // added this one, unsaon pag back sa user oi if naa na siya sa registration page tas mo back sa landing page niggafuck
+  const navigate = useNavigate()
   return (
     <header className="flex justify-between items-center p-7 text-white shadow-md w-full">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 cursor-pointer" onClick={() => navigate('/')}>
       <img src={ApplicationLogo} alt="SASS Logo" className="w-16 h-10 rounded-lg" />
       </div>
       <nav className="flex items-center space-x-6 gap-1.5">
