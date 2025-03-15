@@ -158,8 +158,7 @@ const LandingPage = () => {
         <section className="mt-30 text-center w-full" id="pricing-section">
           <h2 className="text-3xl font-bold mb-4">Pricing and Plan</h2>
           <p className="text-gray-400 mb-6 max-w-md mx-auto">
-            Donec dignissim, odio ac imperdiet luctus, ante nisl accumsan justo,
-            et venenatis ante metus pellentesque sem.
+            We have several powerful plans to enhance student support in your Student Affairs Office.
           </p>
           <div className="flex justify-center gap-4 mb-8">
             <button className="px-4 py-2 bg-blue-600 text-white rounded-md">
@@ -169,7 +168,7 @@ const LandingPage = () => {
               Yearly
             </button>
           </div>
-          <div className="lg:max-w-[70%] mx-auto grid grid-cols-[repeat(auto-fit,minmax(220px,_1fr))] justify-center gap-6">
+          <div className="lg:max-w-[55%] mx-auto grid grid-cols-[repeat(auto-fit,minmax(220px,_1fr))] justify-center gap- bg-white rounded-lg">
             {plans?.map((plan, idx) => {
               return (
                 <PlanCard

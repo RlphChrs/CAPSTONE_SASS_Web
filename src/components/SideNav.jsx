@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import homeIcon from "../assets/home-icon.png";
 import tableIcon from "../assets/table-icon.png";
-import billingIcon from "../assets/billing-icon.png";
 import knowledgeIcon from "../assets/knowledge-icon.png";
 import appointmentIcon from "../assets/appointment-icon.png";
 import reportIcon from "../assets/Report-icon.png";
@@ -11,11 +10,10 @@ import reportIcon from "../assets/Report-icon.png";
 const menuItems = [
   { name: "Dashboard", assets: homeIcon, path: "/dashboard" },
   { name: "Tables", assets: tableIcon, path: "/tables" },
-  { name: "Billing", assets: billingIcon, path: "/billing" },
   { name: "Upload Knowledge", assets: knowledgeIcon, path: "/upload-knowledge" },
   { name: "Appointment", assets: appointmentIcon, path: "/add-appointment" },
   { name: "Report", assets: reportIcon, path: "/report" },
-  { name: "Calendar", assets: billingIcon, path: "calendar-month" }
+  { name: "Calendar", assets: appointmentIcon, path: "/calendar-month" }
 ];
 
 const SideNav = () => {
@@ -26,7 +24,7 @@ const SideNav = () => {
   };
 
   return (
-    <div className="w-74 h-275 bg-gray-900 text-white flex flex-col shadow-md mt-16 p-6">
+    <div className="w-74 h-230 bg-gray-900 text-white flex flex-col shadow-md mt-16 p-6">
       <nav className="flex-grow">
         <ul>
           {menuItems.map((item, index) => (
