@@ -1,6 +1,6 @@
 import { useState } from "react";
 import EditProfile from "../components/EditProfile";
-import { FaEdit } from "react-icons/fa"; // Importing edit icon
+import { FaEdit } from "react-icons/fa";
 
 export default function ProfileDisplay() {
   const [isEditing, setIsEditing] = useState(false);
