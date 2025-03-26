@@ -11,11 +11,11 @@ export const useLogin = () => {
 
     try {
       const response = await loginSAO(email, password);
-      localStorage.setItem('saoToken', response.token); 
+      localStorage.setItem("token", response.token); // ✅ SAVE it!
       setLoading(false);
       return response;
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      setError(err.response?.data?.message || "Login failed.");
       setLoading(false);
       throw err;
     }

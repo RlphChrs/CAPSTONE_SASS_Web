@@ -4,16 +4,7 @@ import SideNav from "../components/SideNav";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 const reportsData = [
-  { id: "#20462", reporter: "Matt Dickerson", date: "13/05/2022", time: "1:45 PM", reason: "Stealing", status: "Delivered" },
-  { id: "#18933", reporter: "Wiktoria", date: "22/05/2022", time: "1:45 PM", reason: "Stealing", status: "Delivered" },
-  { id: "#45169", reporter: "Trixie Byrd", date: "15/06/2022", time: "1:45 PM", reason: "Stealing", status: "Process" },
-  { id: "#54304", reporter: "Brad Mason", date: "06/09/2022", time: "1:45 PM", reason: "Stealing", status: "Process" },
-  { id: "#77188", reporter: "Sanderson", date: "25/09/2022", time: "1:45 PM", reason: "Stealing", status: "Canceled" },
-  { id: "#75003", reporter: "Jun Redfern", date: "04/10/2022", time: "1:45 PM", reason: "Stealing", status: "Process" },
-  { id: "#58025", reporter: "Miriam Kidd", date: "17/10/2022", time: "1:45 PM", reason: "Stealing", status: "Delivered" },
-  { id: "#44122", reporter: "Dominic", date: "24/10/2022", time: "1:45 PM", reason: "Stealing", status: "Delivered" },
-  { id: "#89094", reporter: "Shanice", date: "01/11/2022", time: "1:45 PM", reason: "Stealing", status: "Canceled" },
-  { id: "#85252", reporter: "Poppy-Rose", date: "22/11/2022", time: "1:45 PM", reason: "Stealing", status: "Process" },
+  { id: "#20462", reporter: "Matt Dickerson", date: "13/05/2022", time: "1:45 PM", reason: "Stealing", status: "Delivered" }
 ];
 
 const Reports = () => {

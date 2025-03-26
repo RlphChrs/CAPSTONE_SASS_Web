@@ -19,6 +19,7 @@ import SubscriptionDetails from './Pages/SubscriptionDetails';
 import SubscriptionPlans from './components/SubscriptionPlans';
 import Information from './components/subcriptiondetails';
 import ViewSpecificDayPage from './Pages/ViewSpecificDayPage';
+import Letters from './Pages/Letters';
 import Wrapper from './components/Wrapper';
   
 
@@ -42,6 +43,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/upload-knowledge" element={<UploadKnowledgePage />} />
           <Route path="/view-report" element={<ViewReport />} />
           <Route path="/view-specific-day" element={<ViewSpecificDayPage />} />
+          <Route path="/letters" element={<Letters />} />
         </Routes>
       </Wrapper>
     </BrowserRouter>

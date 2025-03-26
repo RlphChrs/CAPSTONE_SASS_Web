@@ -3,6 +3,7 @@ import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 const Upload_URL = import.meta.env.VITE_UPLOAD_URL;
 const SUB_URL = import.meta.env.VITE_SUB_URL;
+const SAO_URL = import.meta.env.VITE_SAO_URL;
 
 //Registration
 export const registerSAO = async (formData) => {
@@ -19,6 +20,8 @@ export const registerSAO = async (formData) => {
 export const loginSAO = async (email, password) => {
   try {
     const response = await axios.post(`${API_URL}/login`, { email, password });
+    localStorage.setItem("token", response.data.token);
+
     return response.data;
   } catch (error) {
     console.error("Login failed:", error.response?.data?.message);
@@ -26,19 +29,20 @@ export const loginSAO = async (email, password) => {
   }
 };
 
+
 //File Upload
 export const uploadFile = async (file, token) => {
   try {
     const formData = new FormData();
-    formData.append("File", file); // ✅ Ensure 'File' matches backend Multer field
+    formData.append("File", file); 
 
     const response = await axios.post(
       `${Upload_URL}/uploads/upload`,
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data", // ✅ Required for file upload
-          Authorization: `Bearer ${token}`, // ✅ Send JWT Token
+          "Content-Type": "multipart/form-data", 
+          Authorization: `Bearer ${token}`, 
         },
         onUploadProgress: (progressEvent) => {
           console.log(
@@ -49,7 +53,7 @@ export const uploadFile = async (file, token) => {
       }
     );
 
-    return response.data; // ✅ Returns uploaded file URL
+    return response.data; 
   } catch (error) {
     console.error("File upload failed:", error.response?.data?.message);
     throw error;
@@ -99,3 +103,22 @@ export const fetchPlans = async () => {
     return { success: false };
   }
 };
+
+// Fetch student Submissions (Letters)
+
+export const getSAOSubmissions = async () => {
+  const token = localStorage.getItem("token");
+  console.log("🔑 Using SAO token:", token);
+
+  const response = await axios.get(`${SAO_URL}/submissions`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+};
+
+
+
+

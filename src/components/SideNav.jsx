@@ -5,6 +5,7 @@ import tableIcon from "../assets/table-icon.png";
 import knowledgeIcon from "../assets/knowledge-icon.png";
 import appointmentIcon from "../assets/appointment-icon.png";
 import reportIcon from "../assets/Report-icon.png";
+import letter from "../assets/letter-icon.png";
 
 
 const menuItems = [
@@ -13,7 +14,8 @@ const menuItems = [
   { name: "Upload Knowledge", assets: knowledgeIcon, path: "/upload-knowledge" },
   { name: "Appointment", assets: appointmentIcon, path: "/add-appointment" },
   { name: "Report", assets: reportIcon, path: "/report" },
-  { name: "Calendar", assets: appointmentIcon, path: "/calendar-month" }
+  { name: "Calendar", assets: appointmentIcon, path: "/calendar-month" },
+  { name: "Letters", assets: letter, path: "/letters" }
 ];
 
 const SideNav = () => {
