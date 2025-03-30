@@ -29,7 +29,6 @@ export const loginSAO = async (email, password) => {
   }
 };
 
-
 //File Upload
 export const uploadFile = async (file, token) => {
   try {
@@ -117,6 +116,17 @@ export const getSAOSubmissions = async () => {
   });
 
   return response.data;
+};
+
+
+export const getSAONotifications = async () => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${SAO_URL}/notifications`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data.notifications; 
 };
 
 
