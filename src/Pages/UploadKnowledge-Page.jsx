@@ -57,7 +57,6 @@ const UploadKnowledgePage = () => {
     setUploading(true);
     setUploadProgress(0);
 
-    // Create a file entry in the uploading list
     const newFile = {
       id: selectedFile.name + Date.now(),
       fileName: selectedFile.name,

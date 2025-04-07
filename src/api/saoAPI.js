@@ -16,11 +16,12 @@ export const registerSAO = async (formData) => {
   }
 };
 
-//Login
 export const loginSAO = async (email, password) => {
   try {
     const response = await axios.post(`${API_URL}/login`, { email, password });
-    localStorage.setItem("token", response.data.token);
+
+    localStorage.setItem("saoToken", response.data.token);
+    localStorage.setItem("saoUser", JSON.stringify(response.data.user)); 
 
     return response.data;
   } catch (error) {
@@ -29,7 +30,7 @@ export const loginSAO = async (email, password) => {
   }
 };
 
-//File Upload
+
 export const uploadFile = async (file, token) => {
   try {
     const formData = new FormData();

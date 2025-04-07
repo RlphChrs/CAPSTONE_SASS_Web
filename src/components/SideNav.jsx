@@ -12,7 +12,6 @@ const menuItems = [
   { name: "Dashboard", assets: homeIcon, path: "/dashboard" },
   { name: "Tables", assets: tableIcon, path: "/tables" },
   { name: "Upload Knowledge", assets: knowledgeIcon, path: "/upload-knowledge" },
-  { name: "Appointment", assets: appointmentIcon, path: "/add-appointment" },
   { name: "Report", assets: reportIcon, path: "/report" },
   { name: "Calendar", assets: appointmentIcon, path: "/calendar-month" },
   { name: "Letters", assets: letter, path: "/letters" }
@@ -26,7 +25,7 @@ const SideNav = () => {
   };
 
   return (
-    <div className="w-74 h-230 bg-gray-900 text-white flex flex-col shadow-md mt-16 p-6">
+    <div className="w-74 h-m bg-gray-900 text-white flex flex-col shadow-md mt-16 p-6">
       <nav className="flex-grow">
         <ul>
           {menuItems.map((item, index) => (
