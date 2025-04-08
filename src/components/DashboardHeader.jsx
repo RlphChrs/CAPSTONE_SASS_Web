@@ -13,16 +13,13 @@ const DashboardHeader = () => {
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const [selectedFileUrl, setSelectedFileUrl] = useState(null);
-  const { notifications, loading, error } = useNotifications();
+  const { notifications, loading, error, markAsRead } = useNotifications();
   const [selectedPDF, setSelectedPDF] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isResponseModalOpen, setIsResponseModalOpen] = useState(false);
   const [responseSubject, setResponseSubject] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
-
-  
-
 
 
   const getPageName = (path) => {
@@ -118,52 +115,79 @@ const DashboardHeader = () => {
               </div>
             )}
           </div>
-  
-           {/* 🔔 Notification Dropdown */}
-          <div className="relative">
-            <button
-              className="text-gray-400 hover:text-white relative"
-              onClick={() => setShowNotifications(!showNotifications)}
-            >
-              <FaBell size={18} />
-              {notifications.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 rounded-full">
-                  {notifications.length}
-                </span>
-              )}
-            </button>
+          
+                  {/* 🔔 Notification Dropdown */}
+        <div className="relative">
+          <button
+            className="text-gray-400 hover:text-white relative"
+            onClick={() => setShowNotifications(!showNotifications)}
+          >
+            <FaBell size={18} />
+            {notifications.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 rounded-full">
+                {notifications.length}
+              </span>
+            )}
+          </button>
 
-            {showNotifications && (
-              <div className="absolute right-0 mt-2 w-[420px] bg-white text-black rounded-md shadow-lg max-h-[400px] overflow-y-auto z-50">
-                <h3 className="font-semibold px-4 py-2 border-b">Notifications</h3>
+          {showNotifications && (
+            <div className="absolute right-0 mt-2 w-[420px] bg-white text-black rounded-md shadow-lg max-h-[400px] overflow-y-auto z-50">
+              <h3 className="font-semibold px-4 py-2 border-b">Notifications</h3>
 
-                {loading ? (
-                  <p className="px-4 py-2">Loading...</p>
-                ) : error ? (
-                  <p className="px-4 py-2 text-red-500">Error loading notifications</p>
-                ) : notifications.length === 0 ? (
-                  <p className="px-4 py-2">No new notifications</p>
-                ) : (
-                  notifications.map((notif) => (
-                    <div
-                      key={notif.id}
-                      className="flex justify-between items-center bg-gray-200 rounded-md px-4 py-2 mb-2 mx-2"
-                    >
-                      <div className="flex-1">
-                        <p className="font-bold text-sm mb-1">
-                          {notif.studentName?.toUpperCase()} Submitted a file
-                        </p>
-                        <p className="text-sm text-gray-700 truncate">{notif.reason}</p>
-                      </div>
+              {loading ? (
+                <p className="px-4 py-2">Loading...</p>
+              ) : error ? (
+                <p className="px-4 py-2 text-red-500">Error loading notifications</p>
+              ) : notifications.length === 0 ? (
+                <p className="px-4 py-2">No new notifications</p>
+              ) : (
+                notifications.map((notif) => (
+                  <div
+                    key={notif.id}
+                    className={`flex justify-between items-center rounded-md px-4 py-2 mb-2 mx-2 ${
+                      notif.type === "appointment" ? "bg-blue-200" : "bg-gray-200"
+                    }`}
+                    onClick={() => {
+                      if (notif.type === "appointment") {
+                        markAsRead(
+                          notif.schoolId,
+                          "appointmentBookings",
+                          notif.id
+                        );
+                      }
+                    }}
+                  >
+                    <div className="flex-1">
+                      {notif.type === "appointment" ? (
+                        <>
+                          <p className="font-bold text-sm mb-1">
+                            {notif.studentName?.toUpperCase()} booked an appointment
+                          </p>
+                          <p className="text-sm text-gray-700">
+                            {notif.date} from {notif.fromTime} to {notif.toTime}
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="font-bold text-sm mb-1">
+                            {notif.studentName?.toUpperCase()} Submitted a file
+                          </p>
+                          <p className="text-sm text-gray-700 truncate">{notif.reason}</p>
+                        </>
+                      )}
+                    </div>
 
-                      <div className="text-right text-sm text-gray-600 whitespace-nowrap px-4">
-                        <p>{formatDate(notif.timestamp)}</p>
-                        <p>{formatTime(notif.timestamp)}</p>
-                      </div>
+                    <div className="text-right text-sm text-gray-600 whitespace-nowrap px-4">
+                      <p>{formatDate(notif.timestamp)}</p>
+                      <p>{formatTime(notif.timestamp)}</p>
+                    </div>
 
+                    {/* For submission notifications*/}
+                    {notif.type !== "appointment" && (
                       <div className="flex flex-col space-y-1 ml-4">
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setSelectedPDF(notif.fileUrl);
                             setIsModalOpen(true);
                           }}
@@ -172,23 +196,32 @@ const DashboardHeader = () => {
                           View
                         </button>
                         <button
-                          onClick={() => {
-                            setSelectedStudent({ name: notif.studentName, id: notif.studentId });
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedStudent({
+                              name: notif.studentName,
+                              id: notif.studentId,
+                              notifId: notif.id,      
+                              schoolId: notif.schoolId
+                            });
                             setIsResponseModalOpen(true);
+                            // Do not mark as read here—mark as read after response is sent.
                           }}
                           className="bg-[#0B0D21] hover:bg-gray-900 text-white text-xs px-4 py-1 rounded"
                         >
                           Respond
                         </button>
                       </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            )}
-          </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
 
-  
+
+
           {/* Settings Dropdown */}
           <div className="relative">
             <button
@@ -282,42 +315,50 @@ const DashboardHeader = () => {
                   Cancel
                 </button>
                 <button
-                 onClick={async () => {
-                  if (!responseSubject.trim() || !responseMessage.trim()) {
-                    alert("Please fill in both the subject and message.");
-                    return;
-                  }
-                
-                  try {
-                    const token = localStorage.getItem("token");
-                    const payload = {
-                      studentId: selectedStudent.id,
-                      studentName: selectedStudent.name,
-                      subject: responseSubject,
-                      message: responseMessage,
-                    };
-                
-                    const res = await axios.post(
-                      `${import.meta.env.VITE_SAO_URL}/notifications/respond`,
-                      payload,
-                      {
-                        headers: {
-                          Authorization: `Bearer ${token}`,
-                        },
+                  onClick={async () => {
+                    if (!responseSubject.trim() || !responseMessage.trim()) {
+                      alert("Please fill in both the subject and message.");
+                      return;
+                    }
+
+                    try {
+                      const token = localStorage.getItem("token");
+                      const payload = {
+                        studentId: selectedStudent.id,
+                        studentName: selectedStudent.name,
+                        subject: responseSubject,
+                        message: responseMessage,
+                      };
+
+                      const res = await axios.post(
+                        `${import.meta.env.VITE_SAO_URL}/notifications/respond`,
+                        payload,
+                        {
+                          headers: {
+                            Authorization: `Bearer ${token}`,
+                          },
+                        }
+                      );
+
+                      console.log("✅ Response sent:", res.data.message);
+                      // Mark the notification as read after sending response
+                      if (selectedStudent.notifId && selectedStudent.schoolId) {
+                        await markAsRead(
+                          selectedStudent.schoolId,
+                          "studentSubmissions",
+                          selectedStudent.notifId
+                        );
                       }
-                    );
-                
-                    console.log("✅ Response sent:", res.data.message);
-                    setIsResponseModalOpen(false);
-                    setResponseSubject("");
-                    setResponseMessage("");
-                    alert("Response sent successfully!");
-                  } catch (err) {
-                    console.error("❌ Failed to send response:", err);
-                    alert("Something went wrong while sending the response.");
-                  }
-                }}
-                
+
+                      setIsResponseModalOpen(false);
+                      setResponseSubject("");
+                      setResponseMessage("");
+                      alert("Response sent successfully!");
+                    } catch (err) {
+                      console.error("❌ Failed to send response:", err);
+                      alert("Something went wrong while sending the response.");
+                    }
+                  }}
                   className="bg-[#0B0D21] text-white px-6 py-2 rounded hover:bg-gray-900"
                 >
                   Send

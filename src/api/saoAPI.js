@@ -130,6 +130,34 @@ export const getSAONotifications = async () => {
   return response.data.notifications; 
 };
 
+export const getSAOCombinedNotifications = async () => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${SAO_URL}/notifications/all`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data.notifications;
+};
+
+export const markNotificationAsRead = async (schoolId, type, id) => {
+  const token = localStorage.getItem("token");
+
+  return await axios.post(
+    `${import.meta.env.VITE_SAO_URL}/notifications/mark-read`,
+    {
+      type, 
+      id    
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+
 
 
 
