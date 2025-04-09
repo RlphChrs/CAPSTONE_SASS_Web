@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
-import { getSAOCombinedNotifications, markNotificationAsRead } from "../api/saoAPI";
+import {
+  getSAOCombinedNotifications,
+  markNotificationAsRead,
+} from "../api/saoAPI";
 
 const useNotifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchNotifications = async () => {
     try {
       setLoading(true);
       const data = await getSAOCombinedNotifications();
       setNotifications(data);
-    } catch (error) {
-      console.error("Failed to fetch notifications:", error);
+    } catch (err) {
+      console.error("❌ Failed to fetch notifications:", err);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -20,9 +25,9 @@ const useNotifications = () => {
   const markAsRead = async (schoolId, category, notificationId) => {
     try {
       await markNotificationAsRead(schoolId, category, notificationId);
-      setNotifications((prev) => prev.filter((notif) => notif.id !== notificationId));
-    } catch (error) {
-      console.error("❌ Failed to mark notification as read:", error);
+      setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
+    } catch (err) {
+      console.error("❌ Failed to mark notification as read:", err);
     }
   };
 
@@ -30,7 +35,7 @@ const useNotifications = () => {
     fetchNotifications();
   }, []);
 
-  return { notifications, loading, refresh: fetchNotifications, markAsRead };
+  return { notifications, loading, error, refresh: fetchNotifications, markAsRead };
 };
 
 export default useNotifications;

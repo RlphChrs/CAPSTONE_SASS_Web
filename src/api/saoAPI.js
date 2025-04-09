@@ -157,6 +157,31 @@ export const markNotificationAsRead = async (schoolId, type, id) => {
   );
 };
 
+export const fetchReportById = async (reportId) => {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.get(`${SAO_URL}/reports/${reportId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.report; 
+};
+
+
+export const respondToReport = async (responseData) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.post(`${SAO_URL}/respond/respond-report`,
+    responseData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
 
 
 
