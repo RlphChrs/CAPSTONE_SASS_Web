@@ -11,6 +11,7 @@ import Dashboard from './Pages/Dashboard';
 import ProfilePage from './Pages/ProfilePage';
 import CalendarMonthView from './Pages/CalendarMonthView';
 import Report from './Pages/Report';
+import StudentList from './Pages/StudentList';
 import UploadKnowledgePage from './Pages/UploadKnowledge-Page';
 import ViewReport from './Pages/ViewReport';
 import Subscription from './Pages/Subscription';
@@ -30,6 +31,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/studentlist" element={<StudentList />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/subscription" element={<Subscription />} />
           <Route path="/subscriptiondetails" element={<SubscriptionDetails />} />

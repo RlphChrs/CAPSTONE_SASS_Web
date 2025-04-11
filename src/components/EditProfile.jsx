@@ -46,7 +46,6 @@ export default function EditProfile({ user, setIsEditing }) {
             { label: "Your Name", name: "name" },
             { label: "User Name", name: "username" },
             { label: "Email", name: "email", disabled: true },
-            { label: "Password", name: "password", type: "password" },
             { label: "Date of Birth", name: "dob" },
             { label: "Present Address", name: "address" },
             { label: "School", name: "school" },
