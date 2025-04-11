@@ -47,12 +47,12 @@ const Reports = () => {
             <table className="w-full border-collapse bg-white shadow-md rounded-lg">
               <thead>
                 <tr className="bg-gray-200 text-black">
-                  <th className="p-3 text-10">Report ID</th>
-                  <th className="p-3 text-10">Reporter</th>
-                  <th className="p-3 text-10">Date</th>
-                  <th className="p-3 text-10">Time</th>
-                  <th className="p-3 text-10">Reason</th>
-                  <th className="p-3 text-10">Status</th>
+                  <th className="p-3 text-10 text-left">Report ID</th>
+                  <th className="p-3 text-10 text-left">Reporter</th>
+                  <th className="p-3 text-10 text-left">Date</th>
+                  <th className="p-3 text-10 text-left">Time</th>
+                  <th className="p-3 text-10 text-left">Reason</th>
+                  <th className="p-3 text-10 text-left">Status</th>
                   <th className="p-3 text-left">Action</th>
                 </tr>
               </thead>
