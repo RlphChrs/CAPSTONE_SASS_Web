@@ -2,6 +2,7 @@ import React from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import SideNav from '../components/SideNav';
 import SubscriptionPlans from '../components/SubscriptionPlans';
+
 const Subscription = () => {
   return (
     <div className="flex min-h-screen">

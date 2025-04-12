@@ -18,7 +18,7 @@ export default function ProfileDisplay() {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md h-160">
+    <div className="p-6 bg-white rounded-3xl shadow-md h-250 ml-20 mr-20">
       {!isEditing ? (
         <div>
           {/* Profile Heading with Underline Effect */}
@@ -45,7 +45,7 @@ export default function ProfileDisplay() {
             </div>
 
             {/* User Information Grid */}
-            <div className="grid grid-cols-2 gap-10 text-black text-left ml-15">
+            <div className="text-4xl grid grid-cols-2 gap-18 text-black text-left ml-15 ">
               {[
                 ["Your Name", user.name],
                 ["User Name", user.username],
