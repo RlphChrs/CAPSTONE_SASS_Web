@@ -112,10 +112,10 @@ const Dashboard = () => {
                   </div>
                   <div>
                     {transaction.type === 'income' && (
-                      <span className="text-green-500">+${transaction.amount}</span>
+                      <span className="text-green-500">+₱{transaction.amount}</span>
                     )}
                     {transaction.type === 'expense' && (
-                      <span className="text-red-500">-${Math.abs(transaction.amount)}</span>
+                      <span className="text-red-500">-₱{Math.abs(transaction.amount)}</span>
                     )}
                     {transaction.type === 'pending' && (
                       <span className="text-gray-700 font-bold">{transaction.status}</span>
@@ -135,10 +135,10 @@ const Dashboard = () => {
                   </div>
                   <div>
                     {transaction.type === 'income' && (
-                      <span className="text-green-500">+${transaction.amount}</span>
+                      <span className="text-green-500">+₱{transaction.amount}</span>
                     )}
                     {transaction.type === 'expense' && (
-                      <span className="text-red-500">-P{Math.abs(transaction.amount)}</span>
+                      <span className="text-red-500">-₱{Math.abs(transaction.amount)}</span>
                     )}
                     {transaction.type === 'pending' && (
                       <span className="text-gray-700 font-bold">{transaction.status}</span>

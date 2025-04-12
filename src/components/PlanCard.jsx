@@ -18,7 +18,7 @@ const PlanCard = ({ plan, isLastItem }) => {
     <div
       className={`${
         isLastItem ? "bg-indigo-500" : "bg-white text-black"
-      }  p-7 rounded-lg shadow-xl min-h-[400px] flex flex-col`}
+      }  p-7 rounded-2xl shadow-xl min-h-[500px] flex flex-col`}
     >
       <h3 className="text-xl font-semibold mb-2">{plan.planName}</h3>
       <p className="text-4xl font-bold mb-4">
