@@ -20,30 +20,32 @@ import SubscriptionPlans from './components/SubscriptionPlans';
 import Information from './components/subcriptiondetails';
 import Letters from './Pages/Letters';
 import Wrapper from './components/Wrapper';
-  
+import { SubmissionsProvider } from './contexts/SubmissionsContext'; 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <Wrapper>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Registration />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/studentlist" element={<StudentList />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/subscription" element={<Subscription />} />
-          <Route path="/subscriptiondetails" element={<SubscriptionDetails />} />
-          <Route path="/subsinformation" element={<Information />} />
-          <Route path="/subscriptionplans" element={<SubscriptionPlans />} />
-          <Route path="/calendar-month" element={<CalendarMonthView />} />
-          <Route path="/report" element={<Report />} />
-          <Route path="/upload-knowledge" element={<UploadKnowledgePage />} />
-          <Route path="/view-report" element={<ViewReport />} />
-          <Route path="/letters" element={<Letters />} />
-        </Routes>
-      </Wrapper>
+      <SubmissionsProvider> 
+        <Wrapper>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Registration />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/studentlist" element={<StudentList />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/subscription" element={<Subscription />} />
+            <Route path="/subscriptiondetails" element={<SubscriptionDetails />} />
+            <Route path="/subsinformation" element={<Information />} />
+            <Route path="/subscriptionplans" element={<SubscriptionPlans />} />
+            <Route path="/calendar-month" element={<CalendarMonthView />} />
+            <Route path="/report" element={<Report />} />
+            <Route path="/upload-knowledge" element={<UploadKnowledgePage />} />
+            <Route path="/view-report" element={<ViewReport />} />
+            <Route path="/letters" element={<Letters />} />
+          </Routes>
+        </Wrapper>
+      </SubmissionsProvider>
     </BrowserRouter>
   </StrictMode>
 );

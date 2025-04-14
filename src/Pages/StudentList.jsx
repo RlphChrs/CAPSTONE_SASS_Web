@@ -1,28 +1,15 @@
 import React, { useState } from "react";
 import DashboardHeader from "../components/DashboardHeader";
 import SideNav from "../components/SideNav";
-import { FaTrashAlt } from "react-icons/fa";
-
-const students = [
-  { id: "21042", name: "Matt Dickenson", course: "BSIT", year: 1, section: "BSIT1B", status: "ACTIVE" },
-  { id: "18953", name: "Viktoria", course: "Nursing", year: 4, section: "BSN4A", status: "ACTIVE" },
-  { id: "45169", name: "Trixie Byrd", course: "BSIS", year: 3, section: "BSIS3A", status: "OFFLINE" },
-  { id: "34304", name: "Brad Mason", course: "BSCRIM", year: 2, section: "BSCRIM2C", status: "OFFLINE" },
-  { id: "17188", name: "Sanderson", course: "BSED", year: 4, section: "BSED4B", status: "OFFLINE" },
-  { id: "73003", name: "Jun Redfern", course: "MEDTECH", year: 3, section: "BSMT3B", status: "ACTIVE" },
-  { id: "58825", name: "Miriam Kidd", course: "BSHM", year: 1, section: "BSHM1A", status: "OFFLINE" },
-  { id: "44262", name: "Dominic", course: "BSTM", year: 2, section: "BSTM2A", status: "ACTIVE" },
-  { id: "68094", name: "Shanice", course: "IBSA", year: 3, section: "IBSA3A", status: "OFFLINE" },
-  { id: "85252", name: "Poppy-Rose", course: "BSBA", year: 1, section: "BSBA1C", status: "OFFLINE" },
-  { id: "85252", name: "Poppy-Rose", course: "BSPYSCHO", year: 1, section: "BSPYSCHO1A", status: "OFFLINE" },
-  { id: "85252", name: "Poppy-Rose", course: "BSIT", year: 2, section: "BSIT2A", status: "OFFLINE" },
-];
+import { FaTrashAlt, FaEnvelope } from "react-icons/fa";
+import { useStudentList } from "../hooks/useStudentList"; 
 
 const StudentList = () => {
   const [search, setSearch] = useState("");
+  const { students, loading } = useStudentList(); 
 
   const filteredStudents = students.filter((student) =>
-    student.name.toLowerCase().includes(search.toLowerCase())
+    `${student.firstName} ${student.lastName}`.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -32,7 +19,7 @@ const StudentList = () => {
         <DashboardHeader />
 
         {/* Title */}
-        <div className="p-4 mb-4 mt-16 text-left">
+        <div className="p-4 mb-4 mt-16 text-left ms-6">
           <h2 className="text-5xl font-bold text-white">Student List</h2>
         </div>
 
@@ -58,49 +45,41 @@ const StudentList = () => {
           </div>
         </div>
 
-        {/* Table */}
-        <div className="p-6 bg-white rounded-lg shadow-md mt-6 ml-10 mr-5">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse bg-white shadow-md rounded-lg text-sm">
-              <thead>
-                <tr className="bg-gray-200 text-black">
-                  <th className="p-3 text-left">Student ID</th>
-                  <th className="p-3 text-left">Name</th>
-                  <th className="p-3 text-left">Course</th>
-                  <th className="p-3 text-left">Year</th>
-                  <th className="p-3 text-left">Section</th>
-                  <th className="p-3 text-left">Status</th>
-                  <th className="p-3 text-left">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredStudents.map((student, index) => (
-                  <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                    <td className="p-3 text-black">{student.id}</td>
-                    <td className="p-3 text-black">{student.name}</td>
-                    <td className="p-3 text-black">{student.course}</td>
-                    <td className="p-3 text-black">{student.year}</td>
-                    <td className="p-3 text-black">{student.section}</td>
-                    <td className="p-3">
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium ${
-                          student.status === "ACTIVE"
-                            ? "bg-green-200 text-green-800"
-                            : "bg-orange-200 text-orange-800"
-                        }`}
-                      >
-                        {student.status}
-                      </span>
-                    </td>
-                    <td className="p-3">
-                      <FaTrashAlt className="text-red-500 cursor-pointer" />
-                    </td>
+          {/* Table */}
+          <div className="p-6 bg-white rounded-lg shadow-md mt-6 ml-10 mr-5">
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse bg-white shadow-md rounded-lg text-sm">
+                <thead>
+                  <tr className="bg-gray-200 text-black">
+                    <th className="p-3 text-left">Student ID</th>
+                    <th className="p-3 text-left">Name</th>
+                    <th className="p-3 text-left">Course</th>
+                    <th className="p-3 text-left">Year</th>
+                    <th className="p-3 text-left">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {!loading && filteredStudents.map((student, index) => (
+                    <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                      <td className="p-3 text-black">{student.studentId}</td>
+                      <td className="p-3 text-black">{student.firstName} {student.lastName}</td>
+                      <td className="p-3 text-black">{student.course || "—"}</td>
+                      <td className="p-3 text-black">{student.year || "—"}</td>
+                      <td className="p-3 flex space-x-4">
+                        <FaEnvelope className="text-blue-500 cursor-pointer hover:text-blue-700" title="Send Message" />
+                        <FaTrashAlt className="text-red-500 cursor-pointer hover:text-red-700" title="Delete" />
+                      </td>
+                    </tr>
+                  ))}
+                  {loading && (
+                    <tr>
+                      <td colSpan="5" className="text-center p-4 text-gray-500">Loading students...</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
 
         {/* Pagination */}
         <div className="mt-4 flex justify-center">

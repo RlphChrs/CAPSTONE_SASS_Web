@@ -4,6 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const Upload_URL = import.meta.env.VITE_UPLOAD_URL;
 const SUB_URL = import.meta.env.VITE_SUB_URL;
 const SAO_URL = import.meta.env.VITE_SAO_URL;
+const BASE_URL = import.meta.env.VITE_SAO_URL;
 
 //Registration
 export const registerSAO = async (formData) => {
@@ -157,6 +158,20 @@ export const markNotificationAsRead = async (schoolId, type, id) => {
   );
 };
 
+// Fetch appointment notifications 
+export const getAppointmentNotifications = async () => {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.get(`${SAO_URL}/notifications/appointments`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.notifications;
+};
+
+
 export const fetchReportById = async (reportId) => {
   const token = localStorage.getItem("token");
 
@@ -183,6 +198,74 @@ export const respondToReport = async (responseData) => {
   return response.data;
 };
 
+export const getStudentList = async () => {
+  const token = localStorage.getItem("saoToken");
+
+  const response = await axios.get(`${SAO_URL}/students/list`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.students;
+};
+
+// Fetch all reports
+export const getSAOReports = async () => {
+  const token = localStorage.getItem("saoToken");
+  const response = await axios.get(`${SAO_URL}/reports`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data; 
+};
+
+export const markSubmissionAsViewed = async (submissionId) => {
+  const token = localStorage.getItem("saoToken");
+
+  const response = await axios.post(
+    `${SAO_URL}/submissions/submissions/mark-viewed`, 
+    { submissionId },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  return response.data;
+};
+
+export const sendSubmissionResponse = async (payload) => {
+  const token = localStorage.getItem("token");
+  console.log("📦 Sending to /notifications/respond:", payload);
+
+  return axios.post(
+    `${BASE_URL}/notifications/respond`,
+    {
+      submissionId: payload.submissionId,
+      feedback: payload.message, 
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+
+
+export const sendReportResponse = async ({ studentId, studentName, reportId, subject, message }) => {
+  const token = localStorage.getItem("token");
+  const payload = { studentId, studentName, subject, message, reportId };
+
+  return axios.post(`${BASE_URL}/respond/respond-report`, payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
 
 
 

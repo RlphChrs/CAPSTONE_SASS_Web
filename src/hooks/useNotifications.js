@@ -13,6 +13,7 @@ const useNotifications = () => {
     try {
       setLoading(true);
       const data = await getSAOCombinedNotifications();
+      console.log("📬 Combined notifications fetched:", data); // 🔍 Add this
       setNotifications(data);
     } catch (err) {
       console.error("❌ Failed to fetch notifications:", err);
@@ -21,6 +22,7 @@ const useNotifications = () => {
       setLoading(false);
     }
   };
+  
 
   const markAsRead = async (schoolId, category, notificationId) => {
     try {

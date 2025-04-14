@@ -1,27 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import DashboardHeader from "../components/DashboardHeader";
 import SideNav from "../components/SideNav";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import axios from "axios";
-import { getSAOSubmissions } from "../api/saoAPI";
-
+import { useSubmissions } from "../contexts/SubmissionsContext";
+import ResponseModal from "../components/modals/ResponseModal";
+import useLetterSubmission from "../hooks/useLetterSubmission";
 
 const Letters = () => {
-  const [submissions, setSubmissions] = useState([]);
   const [search, setSearch] = useState("");
+  const { submissions, loading, error, markAsViewed } = useLetterSubmission();
+
+  // Modal states for response
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isResponseModalOpen, setIsResponseModalOpen] = useState(false);
+  const [responseSubject, setResponseSubject] = useState("");
+  const [responseMessage, setResponseMessage] = useState("");
 
   useEffect(() => {
-    const fetchSubmissions = async () => {
-        try {
-          const token = localStorage.getItem("token");
-          const data = await getSAOSubmissions(token);
-          setSubmissions(data);
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      };
-    fetchSubmissions();
-  }, []);
+    console.log("🧾 [Letters] Submissions updated:", submissions);
+  }, [submissions]);
 
   const filtered = submissions.filter((entry) =>
     (entry.studentName || "").toLowerCase().includes(search.toLowerCase())
@@ -29,20 +26,30 @@ const Letters = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "reviewed":
-        return "text-green-500";
-      case "pending":
-        return "text-orange-500";
+      case "responded":
+        return "text-green-600";
+      case "viewed":
+        return "text-yellow-500";
       default:
-        return "text-red-500";
+        return "text-gray-500";
     }
+  };
+
+  const handleInlineViewClick = (id) => {
+    console.log("📎 Inline View Clicked in table for ID:", id);
+    markAsViewed(id);
+  };
+
+  const handleNotificationUpdate = (id) => {
+    console.log("🔔 Received update from DashboardHeader for ID:", id);
+    markAsViewed(id);
   };
 
   return (
     <div className="flex min-h-screen">
       <SideNav />
       <div className="flex-1">
-        <DashboardHeader />
+        <DashboardHeader onSubmissionViewed={handleNotificationUpdate} />
 
         {/* Title */}
         <div className="p-4 mb-4 mt-16 text-left ms-5">
@@ -73,6 +80,11 @@ const Letters = () => {
 
         {/* Table */}
         <div className="p-6 bg-white rounded-lg shadow-md mt-6 ml-10 mr-5">
+        {loading ? (
+            <p>Loading letters...</p>
+          ) : error ? (
+            <p className="text-red-500">Error loading letters: {error.message}</p>
+          ) : (
           <div className="overflow-x-auto">
             <table className="w-full border-collapse bg-white shadow-md rounded-lg">
               <thead>
@@ -101,19 +113,28 @@ const Letters = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 underline"
+                        onClick={() => handleInlineViewClick(entry.id)}
                       >
                         View
                       </a>
                     </td>
                     <td className={`p-3 font-bold ${getStatusColor(entry.status)}`}>
-                      {entry.status === "reviewed"
-                        ? "Responded"
-                        : entry.status === "pending"
-                        ? "Processing"
-                        : "Unread"}
+                      {entry.status?.charAt(0).toUpperCase() + entry.status?.slice(1) || "Pending"}
                     </td>
                     <td className="p-3 flex space-x-3">
-                      <FaEdit className="text-blue-500 cursor-pointer" />
+                      <FaEdit
+                        className="text-blue-500 cursor-pointer"
+                        onClick={() => {
+                          setSelectedStudent({
+                            name: entry.studentName,
+                            id: entry.studentId,
+                            notifId: entry.id,
+                            schoolId: entry.schoolId,
+                            submissionId: entry.id,
+                          });
+                          setIsResponseModalOpen(true);
+                        }}
+                      />
                       <FaTrash className="text-red-500 cursor-pointer" />
                     </td>
                   </tr>
@@ -121,16 +142,34 @@ const Letters = () => {
               </tbody>
             </table>
           </div>
+          )}
         </div>
 
-        {/* Pagination (static UI for now) */}
+        {/* Pagination */}
         <div className="mt-4 flex justify-center">
-          <button className="px-4 py-2 bg-gray-200 text-black rounded mr-2 hover:bg-gray-700 transition">Previous</button>
+          <button className="px-4 py-2 bg-gray-200 text-black rounded mr-2 hover:bg-gray-700 transition">
+            Previous
+          </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded">1</button>
           <button className="px-4 py-2 bg-gray-200 text-black rounded mx-2">2</button>
           <button className="px-4 py-2 bg-gray-200 text-black rounded">3</button>
-          <button className="px-4 py-2 bg-gray-200 text-black rounded ml-2 hover:bg-gray-700 transition">Next</button>
+          <button className="px-4 py-2 bg-gray-200 text-black rounded ml-2 hover:bg-gray-700 transition">
+            Next
+          </button>
         </div>
+
+        {/* ✅ Response Modal */}
+        {isResponseModalOpen && selectedStudent && (
+          <ResponseModal
+            student={selectedStudent}
+            onClose={() => setIsResponseModalOpen(false)}
+            subject={responseSubject}
+            setSubject={setResponseSubject}
+            message={responseMessage}
+            setMessage={setResponseMessage}
+            markAsRead={() => {}}
+          />
+        )}
       </div>
     </div>
   );
