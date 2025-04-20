@@ -106,7 +106,9 @@ const Letters = () => {
                     <td className="p-3 text-black">{entry.studentName}</td>
                     <td className="p-3 text-black">{entry.date}</td>
                     <td className="p-3 text-black">{entry.time}</td>
-                    <td className="p-3 text-black">{entry.reason}</td>
+                    <td className="p-3 text-black">
+                          {entry.reason?.trim() !== "" ? entry.reason : "No reason provided"}
+                    </td>
                     <td className="p-3">
                       <a
                         href={entry.fileUrl}

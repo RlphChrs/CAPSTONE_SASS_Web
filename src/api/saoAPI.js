@@ -246,7 +246,10 @@ export const sendSubmissionResponse = async (payload) => {
     `${BASE_URL}/notifications/respond`,
     {
       submissionId: payload.submissionId,
-      feedback: payload.message, 
+      studentId: payload.studentId,
+      studentName: payload.studentName,
+      subject: payload.subject,
+      feedback: payload.message,
     },
     {
       headers: {
@@ -255,6 +258,7 @@ export const sendSubmissionResponse = async (payload) => {
     }
   );
 };
+
 
 
 
