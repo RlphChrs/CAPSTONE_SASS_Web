@@ -5,7 +5,7 @@ import ApplicationLogo from "../assets/logo.png";
 import useNotifications from "../hooks/useNotifications";
 import { fetchReportById } from "../api/saoAPI";
 import ReportDetailsModal from "./modals/ReportDetailsModal";
-import PdfViewerModal from "./modals/PdfViewerMOdal";
+import PdfViewerModal from "./modals/PdfViewerModal";
 import ResponseModal from "./modals/ResponseModal";
 import { useSubmissions } from "../contexts/SubmissionsContext";
 
