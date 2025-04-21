@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import DELLLogo from "../assets/DEllLogo.png";
+import DELLLogo from "../assets/DellLogo.png";
 import ZendeskLogo from "../assets/ZendeskLogo.png";
 import RakutenLogo from "../assets/RakutenLogo.png";
 import PFLogo from "../assets/PacificFundsLogo.png";
