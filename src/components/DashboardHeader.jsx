@@ -19,6 +19,7 @@ const DashboardHeader = ({ onSubmissionViewed }) => {
   const [isResponseModalOpen, setIsResponseModalOpen] = useState(false);
   const [responseSubject, setResponseSubject] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
+  const [userName, setUserName] = useState("");
   const [selectedReport, setSelectedReport] = useState(null);
   const [isReportViewModalOpen, setIsReportViewModalOpen] = useState(false);
 
@@ -81,12 +82,20 @@ const DashboardHeader = ({ onSubmissionViewed }) => {
     console.log("📦 Filtered notifications to render:", filteredNotifications);
   }, [filteredNotifications]);
 
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("saoUser"));
+    if (storedUser) {
+      const fullName = `${storedUser.firstName || ""} ${storedUser.lastName || ""}`.trim();
+      setUserName(fullName);
+    }
+  }, []);
+  
   return (
     <>
       <nav className="bg-[#0B0D21] text-white flex items-center justify-between px-6 py-3 fixed top-0 left-0 right-0 shadow-md z-50">
         <div className="flex items-center space-x-4">
           <img src={ApplicationLogo} alt="SASS Logo" className="w-16 h-10 rounded-lg" />
-          <div className="text-gray-400 text-sm">
+          <div className="text-gray-400 text-sm ms-50">
             Pages / <span className="text-white">{getPageName(location.pathname)}</span>
           </div>
         </div>
@@ -96,12 +105,10 @@ const DashboardHeader = ({ onSubmissionViewed }) => {
             Subscribe
           </button>
 
-          <input type="text" placeholder="Type..." className="bg-white text-black px-3 py-1 rounded-md focus:outline-none" />
-
           {/* Profile */}
           <div className="relative">
             <button onClick={() => { setIsProfileOpen(!isProfileOpen); setIsSettingsOpen(false); }} className="flex items-center space-x-2">
-              <span className="text-sm">J. Smith</span>
+            <span className="text-sm">{userName || "Loading..."}</span>
               <img src="../image/picture.png" alt="Profile" className="h-8 w-8 rounded-full" />
             </button>
             {isProfileOpen && (
@@ -116,7 +123,7 @@ const DashboardHeader = ({ onSubmissionViewed }) => {
           {/* Notifications */}
           <div className="relative">
             <button className="text-gray-400 hover:text-white relative" onClick={() => setShowNotifications(!showNotifications)}>
-              <FaBell size={18} />
+              <FaBell size={20} />
               {filteredNotifications.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 rounded-full">
                   {filteredNotifications.length}

@@ -30,7 +30,7 @@ const Reports = () => {
         <DashboardHeader />
 
         {/* Reports Title */}
-        <div className="p-4 mb-4 mt-16 text-left">
+        <div className="p-4 mb-4 mt-16 text-left ms-6">
           <h2 className="text-5xl font-bold text-white">Reports</h2>
         </div>
 

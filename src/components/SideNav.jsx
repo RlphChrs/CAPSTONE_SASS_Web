@@ -14,7 +14,7 @@ const menuItems = [
   { name: "Upload Knowledge", assets: knowledgeIcon, path: "/upload-knowledge" },
   { name: "Report", assets: reportIcon, path: "/report" },
   { name: "Calendar", assets: appointmentIcon, path: "/calendar-month" },
-  { name: "Letters", assets: letter, path: "/letters" }
+  { name: "FIle Submissions", assets: letter, path: "/letters" }
 ];
 
 const SideNav = () => {

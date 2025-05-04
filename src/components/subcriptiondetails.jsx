@@ -88,7 +88,6 @@ export default function SubscriptionForm() {
               </div>
             </div>
 
-            <p className="text-lg font-semibold mt-4">₱20.00 / Month / User</p>
             <a href="#" className="text-blue-500 text-sm">Details</a>
           </div>
         </div>
@@ -96,17 +95,24 @@ export default function SubscriptionForm() {
 
       {/* Success Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-sm">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm">
-            <div className="text-green-600 text-4xl mb-2">✔</div>
-            <h2 className="text-xl font-semibold">Success</h2>
-            <p className="text-sm text-gray-500">Your subscription has been successfully submitted</p>
-            <button onClick={() => setShowModal(false)} className="mt-4 bg-indigo-900 text-white py-2 px-6 rounded-md hover:bg-blue-700">
-              Ok
-            </button>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-sm">
+    <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm">
+      <div className="text-green-600 text-4xl mb-2">✔</div>
+      <h2 className="text-xl font-semibold">Success</h2>
+      <p className="text-sm text-gray-500">Your subscription has been successfully submitted</p>
+      <button
+        onClick={() => {
+          setShowModal(false);
+          navigate("/dashboard");
+        }}
+        className="mt-4 bg-indigo-900 text-white py-2 px-6 rounded-md hover:bg-blue-700"
+      >
+        Ok
+      </button>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }

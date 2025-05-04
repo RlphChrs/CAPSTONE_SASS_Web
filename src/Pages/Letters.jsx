@@ -53,7 +53,7 @@ const Letters = () => {
 
         {/* Title */}
         <div className="p-4 mb-4 mt-16 text-left ms-5">
-          <h2 className="text-5xl font-bold text-white">Letters</h2>
+          <h2 className="text-5xl font-bold text-white">Files / Letters</h2>
         </div>
 
         {/* Filters */}

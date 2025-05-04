@@ -73,13 +73,6 @@ const DayTimeline = ({ date, appointments = [], onDelete, onBack }) => {
                             : "unknown"}
                         </span>
                       </div>
-
-                      <button
-                        onClick={() => onDelete?.(appt.id)}
-                        className="bg-red-100 text-red-600 hover:bg-red-200 px-3 py-1 rounded-md text-xs font-medium transition"
-                      >
-                        Delete
-                      </button>
                     </div>
                   ))}
                 </div>

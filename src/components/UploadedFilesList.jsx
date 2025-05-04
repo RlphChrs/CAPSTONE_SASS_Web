@@ -58,11 +58,7 @@ const UploadedFilesList = ({ uploadedFiles, setUploadedFiles }) => {
                   <FaFilePdf className="mr-1" /> PDF
                 </span>
                 <p className="text-sm font-semibold text-gray-800 truncate w-3/5">{file.fileName}</p>
-                <p className="text-xs text-gray-500 w-2/5 text-right">
-                  {file.uploadedAt && !isNaN(new Date(file.uploadedAt).getTime())
-                    ? new Date(file.uploadedAt).toLocaleString()
-                    : "Invalid Date"}
-                </p>
+                <p className="text-xs text-gray-500">{file.fileSize}</p>
               </div>
             </div>
             {selectedFile === file && (

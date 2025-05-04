@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import useAppointments from "../hooks/useAppointments";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios"; 
+import axios from "axios";
 
 const months = [
   "January", "February", "March", "April", "May", "June",
@@ -17,8 +17,6 @@ const getDaysInMonth = (month, year) => {
   const monthIndex = months.indexOf(month);
   return new Date(year, monthIndex + 1, 0).getDate();
 };
-
-
 
 const getFirstDayOfMonth = (month, year) => {
   const monthIndex = months.indexOf(month);
@@ -36,6 +34,7 @@ const AppointmentCalendar = ({ onDayClick }) => {
   const [studentName, setStudentName] = useState("");
   const [description, setDescription] = useState("");
   const [events, setEvents] = useState([]);
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // ✅ NEW for confirmation
 
   const { appointments, fetchAppointments } = useAppointments();
   const navigate = useNavigate();
@@ -63,47 +62,45 @@ const AppointmentCalendar = ({ onDayClick }) => {
     console.log("📌 Got appointments for", formattedDate, "=>", fetchedAppointments);
     onDayClick?.(formattedDate, fetchedAppointments); 
   };
-  
-  const addAppointment = async () => {
+
+  const handleConfirmBooking = async () => {
     if (!studentName.trim() || !description.trim()) {
       alert("Please fill in all required fields.");
       return;
     }
-  
+
     const formattedDate = selectedDate
       ? new Date(selectedDate).toISOString().split("T")[0]
       : null;
-  
+
     if (!formattedDate) {
       alert("Invalid or missing date.");
       return;
     }
-  
-    // ✅ Duration check
+
     const from = new Date(`1970-01-01T${fromTime}`);
     const to = new Date(`1970-01-01T${toTime}`);
     const duration = (to - from) / (1000 * 60 * 60);
-  
+
     if (duration !== 1) {
       alert("Appointment should only be 1 hour long.");
       return;
     }
-  
-    // ✅ Conflict check for already booked time slots
+
     const hasConflict = appointments.some(appt => {
       if (appt.date !== formattedDate) return false;
-  
+
       const apptFrom = new Date(`1970-01-01T${appt.fromTime}`);
       const apptTo = new Date(`1970-01-01T${appt.toTime}`);
-  
+
       return from < apptTo && to > apptFrom;
     });
-  
+
     if (hasConflict) {
       alert("That time slot is already booked. Please choose a different time.");
       return;
     }
-  
+
     try {
       const response = await axios.post(
         "http://localhost:3000/api/student/appointments/sao/book",
@@ -120,10 +117,10 @@ const AppointmentCalendar = ({ onDayClick }) => {
           },
         }
       );
-  
+
       alert("Appointment added successfully.");
       console.log("✅ Appointment added:", response.data.message);
-  
+
       setEvents((prev) => [
         ...prev,
         {
@@ -134,14 +131,15 @@ const AppointmentCalendar = ({ onDayClick }) => {
           studentName: studentName || "Walk-in",
         }
       ]);
-  
+
       setStudentName("");
       setDescription("");
       setFromTime("06:00");
       setToTime("07:00");
       setSelectedDate(null);
       setIsModalOpen(false);
-  
+      setShowConfirmModal(false); // ✅ Close confirmation modal
+
     } catch (err) {
       if (err.response?.status === 409) {
         alert("That time slot is already booked. Please choose a different time.");
@@ -150,7 +148,6 @@ const AppointmentCalendar = ({ onDayClick }) => {
         alert("Failed to add appointment. Please check the date/time or try again.");
       }
     }
-  
   };
 
   return (
@@ -177,7 +174,6 @@ const AppointmentCalendar = ({ onDayClick }) => {
           />
         </div>
         <div className="flex items-center gap-3">
-          <FaSearch className="text-gray-600 cursor-pointer" />
           <button
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-500 text-white px-4 py-2 rounded-lg"
@@ -223,81 +219,129 @@ const AppointmentCalendar = ({ onDayClick }) => {
       </div>
 
       {isModalOpen && (
-  <div className="fixed inset-0 bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50">
-    <div className="bg-white rounded-2xl shadow-2xl p-8 w-[700px] max-w-[90%] grid grid-cols-2 gap-8">
-      
-      {/* Left Column - Date Picker */}
-      <div>
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">📅 Choose Date</h2>
-        <DatePicker
-          selected={selectedDate ? new Date(selectedDate) : new Date()}
-          onChange={(date) => setSelectedDate(date)}
-          className="w-full border border-gray-300 p-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          dateFormat="MM/dd/yyyy"
-        />
-      </div>
+        <div className="fixed inset-0 bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 w-[700px] max-w-[90%] grid grid-cols-2 gap-8">
+            {/* Left Column - Date Picker */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">📅 Choose Date</h2>
+              <DatePicker
+                selected={selectedDate ? new Date(selectedDate) : new Date()}
+                onChange={(date) => setSelectedDate(date)}
+                className="w-full border border-gray-300 p-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                dateFormat="MM/dd/yyyy"
+              />
+            </div>
 
-      {/* Right Column - Time and Info */}
-      <div>
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">⏰ Choose Time</h2>
+            {/* Right Column - Time and Info */}
+            <div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">⏰ Choose Time</h2>
 
-        <label className="block text-sm font-medium text-gray-600 mb-1">From</label>
-        <input
-          type="time"
-          value={fromTime}
-          onChange={(e) => setFromTime(e.target.value)}
-          className="w-full border border-gray-300 p-3 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+            <label className="block text-sm font-medium text-gray-600 mb-1">From</label>
+            <div className="w-full">
+              <DatePicker
+                selected={fromTime ? new Date(`1970-01-01T${fromTime}`) : null}
+                onChange={(date) => {
+                  const hours = String(date.getHours()).padStart(2, "0");
+                  const minutes = String(date.getMinutes()).padStart(2, "0");
+                  setFromTime(`${hours}:${minutes}`);
+                }}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={60}
+                timeCaption="Time"
+                dateFormat="HH:mm"
+                className="w-full border border-gray-300 p-3 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
 
-        <label className="block text-sm font-medium text-gray-600 mb-1">To</label>
-        <input
-          type="time"
-          value={toTime}
-          onChange={(e) => setToTime(e.target.value)}
-          className="w-full border border-gray-300 p-3 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+            <label className="block text-sm font-medium text-gray-600 mb-1">To</label>
+            <div className="w-full">
+              <DatePicker
+                selected={toTime ? new Date(`1970-01-01T${toTime}`) : null}
+                onChange={(date) => {
+                  const hours = String(date.getHours()).padStart(2, "0");
+                  const minutes = String(date.getMinutes()).padStart(2, "0");
+                  setToTime(`${hours}:${minutes}`);
+                }}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={60}
+                timeCaption="Time"
+                dateFormat="HH:mm"
+                className="w-full border border-gray-300 p-3 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
 
-        <label className="block text-sm font-medium text-gray-600 mb-1">Student Full Name</label>
-        <input
-          type="text"
-          value={studentName}
-          onChange={(e) => setStudentName(e.target.value)}
-          placeholder="e.g. Juan Dela Cruz"
-          className="w-full border border-gray-300 p-3 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+            <label className="block text-sm font-medium text-gray-600 mb-1">Student Full Name</label>
+            <input
+              type="text"
+              value={studentName}
+              onChange={(e) => setStudentName(e.target.value)}
+              placeholder="e.g. Juan Dela Cruz"
+              className="w-full border border-gray-300 p-3 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-        <label className="block text-sm font-medium text-gray-600 mb-1">Description</label>
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Enter appointment details..."
-          className="w-full border border-gray-300 p-3 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+            <label className="block text-sm font-medium text-gray-600 mb-1">Description</label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter appointment details..."
+              className="w-full border border-gray-300 p-3 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-        <div className="text-xs text-gray-500 mb-4">
-          {selectedDate ? new Date(selectedDate).toLocaleDateString() : ""} — {fromTime} to {toTime}
+            <div className="text-xs text-gray-500 mb-4">
+              {selectedDate ? new Date(selectedDate).toLocaleDateString() : ""} — {fromTime} to {toTime}
+            </div>
+
+            <div className="flex justify-end gap-4 mt-4">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => setShowConfirmModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Add Appointment
+              </button>
+            </div>
+          </div>
+
+          </div>
         </div>
+      )}
 
-        <div className="flex justify-end gap-4 mt-4">
-          <button
-            onClick={() => setIsModalOpen(false)}
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={addAppointment}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            Add Appointment
-          </button>
+      {/* Confirm Booking Modal */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] max-w-full">
+            <h2 className="text-xl font-bold mb-4">Confirm Your Appointment</h2>
+            <p className="mb-6">
+              You are about to book an appointment on <strong>{selectedDate ? new Date(selectedDate).toLocaleDateString() : "" }</strong> 
+               from <strong>{fromTime}</strong> to <strong>{toTime}</strong>.
+              <br /><br />
+              <span className="text-red-500">Please double-check your details, as you cannot delete or cancel this booking after submission.</span>
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmBooking}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                Confirm Booking
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-)}
-
+      )}
     </div>
   );
 };
