@@ -105,12 +105,19 @@ const DashboardHeader = ({ onSubmissionViewed }) => {
             Subscribe
           </button>
 
+           <button
+          onClick={() => navigate('/upload-students')}
+          className="bg-gradient-to-r from-green-600 to-green-600 px-4 py-2 rounded-md font-medium">
+          Upload Students
+          </button>
+
           {/* Profile */}
           <div className="relative">
             <button onClick={() => { setIsProfileOpen(!isProfileOpen); setIsSettingsOpen(false); }} className="flex items-center space-x-2">
             <span className="text-sm">{userName || "Loading..."}</span>
               <img src="../image/picture.png" alt="Profile" className="h-8 w-8 rounded-full" />
             </button>
+            
             {isProfileOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg py-2">
                 <button onClick={handleProfileClick} className="flex items-center px-4 py-2 hover:bg-gray-200 w-full text-left">

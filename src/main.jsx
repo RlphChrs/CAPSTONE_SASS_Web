@@ -21,6 +21,7 @@ import Information from './components/subcriptiondetails';
 import Letters from './Pages/Letters';
 import Wrapper from './components/Wrapper';
 import { SubmissionsProvider } from './contexts/SubmissionsContext'; 
+import UploadStudentListPage from './Pages/UploadStudentListPage';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -43,6 +44,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/upload-knowledge" element={<UploadKnowledgePage />} />
             <Route path="/view-report" element={<ViewReport />} />
             <Route path="/letters" element={<Letters />} />
+            <Route path="/upload-students" element={<UploadStudentListPage />} />
           </Routes>
         </Wrapper>
       </SubmissionsProvider>

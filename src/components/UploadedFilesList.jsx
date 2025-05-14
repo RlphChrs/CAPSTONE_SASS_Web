@@ -13,35 +13,54 @@ const UploadedFilesList = ({ uploadedFiles, setUploadedFiles }) => {
 
   const handleDelete = async (e, file) => {
     e.stopPropagation();
-    
-    const token = localStorage.getItem("saoToken"); 
-
+  
+    const token = localStorage.getItem("saoToken");
+  
     if (!token) {
       alert("Unauthorized: No token found.");
       return;
     }
-    
+  
     try {
+      // 🔍 Extract schoolId and fileName from the fileUrl
+      const decodedUrl = decodeURIComponent(file.fileUrl);
+      const parts = decodedUrl.split("/");
+      const fileName = parts.pop(); // Last part is the file name
+      const schoolIndex = parts.indexOf("schools");
+      const schoolId = schoolIndex !== -1 ? parts[schoolIndex + 1] : null;
+  
+      if (!schoolId || !fileName) {
+        console.error("❌ Failed to extract schoolId or fileName from URL:", decodedUrl);
+        alert("Failed to extract file info. Deletion aborted.");
+        return;
+      }
+  
       const response = await axios.delete(`${API_URL}/uploads/delete-file`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
-        data: { fileId: file.id, fileUrl: file.fileUrl },
+        data: {
+          fileId: file.id,
+          fileUrl: file.fileUrl,
+          schoolId,
+          fileName,
+        },
       });
-
-      if (response.status === 200) { 
+  
+      if (response.status === 200) {
         setSelectedFile(null);
-        alert("File deleted successfully.");
+        setUploadedFiles((prev) => prev.filter((f) => f.id !== file.id));
+        alert(" File deleted successfully.");
       } else {
         throw new Error("Unexpected response status: " + response.status);
       }
     } catch (error) {
-      console.error("Failed to delete file:", error);
+      console.error("❌ Failed to delete file:", error);
       alert("Failed to delete file.");
     }
   };
-
+  
   return (
     <div className="w-full bg-white mt-8 p-6 rounded-lg shadow-md border border-gray-300">
       <h3 className="text-lg font-semibold text-gray-700 mb-4">Uploaded Files</h3>

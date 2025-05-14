@@ -21,8 +21,12 @@ export const loginSAO = async (email, password) => {
   try {
     const response = await axios.post(`${API_URL}/login`, { email, password });
 
+    const user = response.data.user;
+
     localStorage.setItem("saoToken", response.data.token);
-    localStorage.setItem("saoUser", JSON.stringify(response.data.user)); 
+    localStorage.setItem("saoUser", JSON.stringify(user));
+    localStorage.setItem("schoolId", user.schoolId); 
+    localStorage.setItem("saoName", user.firstName + ' ' + user.lastName);
 
     return response.data;
   } catch (error) {
@@ -30,6 +34,7 @@ export const loginSAO = async (email, password) => {
     throw error;
   }
 };
+
 
 
 export const uploadFile = async (file, token) => {
@@ -79,20 +84,38 @@ export const getUploadedFiles = async (token) => {
 //Delete File
 export const deleteFile = async (fileId, fileUrl, token) => {
   try {
+    // Extract fileName and schoolId from the URL
+    const decodedUrl = decodeURIComponent(fileUrl);
+    const parts = decodedUrl.split("/");
+
+    const fileName = parts.pop();
+    const schoolIndex = parts.indexOf("schools");
+    const schoolId = schoolIndex !== -1 ? parts[schoolIndex + 1] : null;
+
+    if (!schoolId || !fileName) {
+      throw new Error("Failed to extract schoolId or fileName from fileUrl.");
+    }
+
     const response = await axios.delete(`${Upload_URL}/delete-file`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      data: { fileId, fileUrl },
+      data: {
+        fileId,
+        fileUrl,
+        schoolId,
+        fileName,
+      },
     });
 
     return response.data;
   } catch (error) {
-    console.error("File deletion failed:", error.response?.data?.message);
+    console.error("File deletion failed:", error.response?.data?.message || error.message);
     throw error;
   }
 };
+
 
 // fetch plans
 export const fetchPlans = async () => {
@@ -260,8 +283,6 @@ export const sendSubmissionResponse = async (payload) => {
 };
 
 
-
-
 export const sendReportResponse = async ({ studentId, studentName, reportId, subject, message }) => {
   const token = localStorage.getItem("token");
   const payload = { studentId, studentName, subject, message, reportId };
@@ -271,5 +292,32 @@ export const sendReportResponse = async ({ studentId, studentName, reportId, sub
   });
 };
 
+export const uploadStudentList = async (formData, token) => {
+  const res = await fetch(`${import.meta.env.VITE_SAO_URL}/match/upload-excel`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!res.ok) throw new Error('Failed to upload student list');
+  return res.json();
+};
+
+
+export const fetchUploadedStudents = async (schoolId, token) => {
+  const response = await fetch(`${import.meta.env.VITE_SAO_URL}/match/list/${schoolId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch uploaded students');
+  }
+
+  return await response.json();
+};
 
 

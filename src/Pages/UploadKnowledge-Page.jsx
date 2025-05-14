@@ -159,7 +159,7 @@ const UploadKnowledgePage = () => {
 
           {/* Right Side - Uploaded Files List */}
           <div className="w-1/3 mt-6"> {/* Ensures proper alignment with Upload Header */}
-            <UploadedFilesList uploadedFiles={uploadedFiles} />
+          <UploadedFilesList uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
           </div>
         </div>
       </div>
