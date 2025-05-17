@@ -30,7 +30,7 @@ const useStudentUpload = () => {
         `${res.newRecords} new | ${res.updatedRecords} updated | ` +
         `${res.skippedRegistered} skipped (already registered)`
       );
-    } catch (error) {
+    } catch (error) {90
       console.error('❌ Upload error:', error);
       setStatus('❌ Upload failed. Please check the file format or try again.');
     } finally {

@@ -320,4 +320,18 @@ export const fetchUploadedStudents = async (schoolId, token) => {
   return await response.json();
 };
 
+export const checkChatbotReady = async (token, schoolId) => {
+  const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sao/chatbot/ready?school_id=${schoolId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to check chatbot readiness");
+  }
+
+  return res.json(); 
+};
+
 

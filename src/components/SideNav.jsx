@@ -10,7 +10,7 @@ import letter from "../assets/letter-icon.png";
 
 const menuItems = [
   { name: "Dashboard", assets: homeIcon, path: "/dashboard" },
-  { name: "Student List", assets: tableIcon, path: "/studentlist" },
+  { name: "Registered Students", assets: tableIcon, path: "/studentlist" },
   { name: "Upload Knowledge", assets: knowledgeIcon, path: "/upload-knowledge" },
   { name: "Report", assets: reportIcon, path: "/report" },
   { name: "Calendar", assets: appointmentIcon, path: "/calendar-month" },
