@@ -95,7 +95,7 @@ const Letters = () => {
             </div>
             <input
               type="text"
-              placeholder="🔍 Search by name, ID, date, time, reason, or status..."
+              placeholder="🔍 Search by name, ID, date, time, or status..."
               className="border p-2 rounded text-black mr-8"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -201,7 +201,7 @@ const Letters = () => {
           </button>
         </div>
 
-        {/* ✅ Response Modal */}
+        {/*  Response Modal */}
         {isResponseModalOpen && selectedStudent && (
           <ResponseModal
             student={selectedStudent}

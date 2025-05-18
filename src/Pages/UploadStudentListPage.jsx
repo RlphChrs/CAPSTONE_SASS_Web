@@ -19,11 +19,10 @@ const UploadStudentListPage = () => {
 
   const [uploadedStudents, setUploadedStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
 
   useEffect(() => {
-    const token = localStorage.getItem('saoToken');
-    const schoolId = localStorage.getItem('schoolId');
-
     if (!schoolId || !token) {
       console.warn("⚠️ Missing schoolId or token. Skipping fetch.");
       return;
@@ -50,6 +49,16 @@ const UploadStudentListPage = () => {
       student.section?.toLowerCase().includes(query)
     );
   });
+
+  const totalPages = Math.ceil(filteredStudents.length / entriesPerPage);
+  const indexOfLast = currentPage * entriesPerPage;
+  const indexOfFirst = indexOfLast - entriesPerPage;
+  const currentStudents = filteredStudents.slice(indexOfFirst, indexOfLast);
+
+  const handleEntriesChange = (e) => {
+    setEntriesPerPage(parseInt(e.target.value));
+    setCurrentPage(1); // Reset to page 1
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -101,45 +110,94 @@ const UploadStudentListPage = () => {
             Uploaded Students
           </h2>
 
-          {/* 🔍 Search Bar */}
-          <div className="mb-4 flex items-center space-x-2">
-            <FaSearch className="text-gray-500" />
-            <input
-              type="text"
-              placeholder="Search by name, student ID, course, or section"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+          {/* 🔍 Search and Entries Control */}
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center space-x-2">
+              <span className="text-black text-sm">Show</span>
+              <select
+                className="p-1 rounded bg-gray-200 text-black text-sm"
+                value={entriesPerPage}
+                onChange={handleEntriesChange}
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+              </select>
+              <span className="text-black text-sm">entries</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <FaSearch className="text-gray-500" />
+              <input
+                type="text"
+                placeholder="Search by name, student ID, course, or section"
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1); // reset to first page on new search
+                }}
+                className="p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
           </div>
 
           {filteredStudents.length === 0 ? (
             <p className="text-sm text-gray-600">No uploaded records found.</p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full table-auto text-sm border border-gray-200">
-                <thead>
-                  <tr className="bg-gray-100 text-gray-700 font-semibold">
-                    <th className="px-4 py-2 text-left">Student ID</th>
-                    <th className="px-4 py-2 text-left">Name</th>
-                    <th className="px-4 py-2 text-left">Course</th>
-                    <th className="px-4 py-2 text-left">Year</th>
-                    <th className="px-4 py-2 text-left">Section</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredStudents.map((student, index) => (
-                    <tr key={index} className="border-t hover:bg-gray-50">
-                      <td className="px-4 py-2">{student.studentId}</td>
-                      <td className="px-4 py-2">{student.firstName} {student.lastName}</td>
-                      <td className="px-4 py-2">{student.course}</td>
-                      <td className="px-4 py-2">{student.year}</td>
-                      <td className="px-4 py-2">{student.section}</td>
+            <>
+              <div className="overflow-x-auto">
+                <table className="min-w-full table-auto text-sm border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-100 text-gray-700 font-semibold">
+                      <th className="px-4 py-2 text-left">Student ID</th>
+                      <th className="px-4 py-2 text-left">Name</th>
+                      <th className="px-4 py-2 text-left">Course</th>
+                      <th className="px-4 py-2 text-left">Year</th>
+                      <th className="px-4 py-2 text-left">Section</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {currentStudents.map((student, index) => (
+                      <tr key={index} className="border-t hover:bg-gray-50">
+                        <td className="px-4 py-2">{student.studentId}</td>
+                        <td className="px-4 py-2">{student.firstName} {student.lastName}</td>
+                        <td className="px-4 py-2">{student.course}</td>
+                        <td className="px-4 py-2">{student.year}</td>
+                        <td className="px-4 py-2">{student.section}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+              <div className="mt-4 flex justify-center space-x-2">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-700 text-black'}`}
+                >
+                  Previous
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i + 1}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`px-4 py-2 rounded ${currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-black hover:bg-gray-700'}`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className={`px-4 py-2 rounded ${currentPage === totalPages ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-700 text-black'}`}
+                >
+                  Next
+                </button>
+              </div>
+            </>
           )}
         </div>
       </div>

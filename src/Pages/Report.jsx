@@ -9,6 +9,9 @@ import ResponseModal from "../components/modals/ResponseModal";
 
 const Reports = () => {
   const [search, setSearch] = useState("");
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { reports, loading, error } = useReports();
 
   const [selectedReport, setSelectedReport] = useState(null);
@@ -19,9 +22,34 @@ const Reports = () => {
   const [responseSubject, setResponseSubject] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
 
-  const filteredReports = reports?.filter((report) =>
-    report.studentName.toLowerCase().includes(search.toLowerCase())
-  ) || [];
+  // Enhanced filtering: search by studentName, date, or status
+  const filteredReports = (reports || []).filter((report) => {
+    const text = search.toLowerCase();
+
+    let formattedDate = "";
+    if (report.dateSubmitted?._seconds) {
+      const dateObj = new Date(report.dateSubmitted._seconds * 1000);
+      formattedDate = format(dateObj, "MM/dd/yyyy").toLowerCase();
+    }
+
+    const status = (report.status || "Pending").toLowerCase();
+
+    return (
+      (report.studentName || "").toLowerCase().includes(text) ||
+      formattedDate.includes(text) ||
+      status.includes(text)
+    );
+  });
+
+  const totalPages = Math.ceil(filteredReports.length / entriesPerPage);
+  const indexOfLast = currentPage * entriesPerPage;
+  const indexOfFirst = indexOfLast - entriesPerPage;
+  const currentReports = filteredReports.slice(indexOfFirst, indexOfLast);
+
+  const handleEntriesChange = (e) => {
+    setEntriesPerPage(parseInt(e.target.value));
+    setCurrentPage(1); 
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -39,16 +67,20 @@ const Reports = () => {
           <div className="flex justify-between items-center mb-1 mt-1">
             <div className="flex items-center space-x-2">
               <span className="text-black text-1xl">Show</span>
-              <select className="p-2 rounded bg-gray-400 text-black">
-                <option>10</option>
-                <option>20</option>
-                <option>50</option>
+              <select
+                className="p-2 rounded bg-gray-400 text-black"
+                value={entriesPerPage}
+                onChange={handleEntriesChange}
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
               </select>
               <span className="text-black text-1xl">entries</span>
             </div>
             <input
               type="text"
-              placeholder="🔍 Search by reporter..."
+              placeholder="🔍 Search by name, date, or status..."
               className="border p-2 rounded text-black mr-8"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -77,7 +109,7 @@ const Reports = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredReports.map((report, index) => {
+                  {currentReports.map((report, index) => {
                     let formattedDate = "N/A";
                     let formattedTime = "N/A";
 
@@ -111,8 +143,7 @@ const Reports = () => {
                         >
                           {report.status || "Pending"}
                         </td>
-                        <td className="p-3 flex space-x-3"
-                            onClick={(e) => e.stopPropagation()}>
+                        <td className="p-3 flex space-x-3" onClick={(e) => e.stopPropagation()}>
                           <FaEdit
                             className="text-blue-500 cursor-pointer"
                             onClick={() => {
@@ -138,14 +169,30 @@ const Reports = () => {
         </div>
 
         {/* Pagination Controls */}
-        <div className="mt-4 flex justify-center">
-          <button className="px-4 py-2 bg-gray-200 text-black rounded mr-2 hover:bg-gray-700 transition">
+        <div className="mt-4 flex justify-center space-x-2">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 rounded ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-gray-200 hover:bg-gray-700 text-black"}`}
+          >
             Previous
           </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded">1</button>
-          <button className="px-4 py-2 bg-gray-200 text-black rounded mx-2">2</button>
-          <button className="px-4 py-2 bg-gray-200 text-black rounded">3</button>
-          <button className="px-4 py-2 bg-gray-200 text-black rounded ml-2 hover:bg-gray-700 transition">
+
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-4 py-2 rounded ${currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-gray-200 text-black hover:bg-gray-700"}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 rounded ${currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-gray-200 hover:bg-gray-700 text-black"}`}
+          >
             Next
           </button>
         </div>
